@@ -72,6 +72,14 @@ if(ENABLE_SPVREMAPPER)
     set(LIBRARIES ${LIBRARIES} SPVRemapper)
 endif()
 
+if(BUILD_SHARED_LIBS)
+    set(LIBRARIES ${LIBRARIES} ${SPIRV_TOOLS_SHARED_LIBRARIES})
+    target_include_directories(glslangValidator PUBLIC ${SPIRV_TOOLS_SHARED_INCLUDE_DIRS})
+else()
+    set(LIBRARIES ${LIBRARIES} ${SPIRV_TOOLS_LIBRARIES})
+    target_include_directories(glslangValidator PUBLIC ${SPIRV_TOOLS_INCLUDE_DIRS})
+endif(BUILD_SHARED_LIBS)
+
 if(WIN32)
     set(LIBRARIES ${LIBRARIES} psapi)
 elseif(UNIX)
@@ -81,9 +89,6 @@ elseif(UNIX)
 endif()
 
 target_link_libraries(glslangValidator ${LIBRARIES})
-target_include_directories(glslangValidator PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../External>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/External>)
 
 if(ENABLE_OPT)
     target_include_directories(glslangValidator
