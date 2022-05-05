@@ -7,5 +7,5 @@
     Description: OpenGL and OpenGL ES shader front end and validator
     Requires:
     Version: @VERSION@
-    Libs: -L${libdir} -lglslang -lOSDependent -lHLSL -lOGLCompiler -lSPVRemapper
+    Libs: -L${libdir} -lglslang -lMachineIndependent -lOSDependent -lHLSL -lOGLCompiler -lGenericCodeGen -lSPVRemapper -lpthread
     Cflags: -I${includedir}
