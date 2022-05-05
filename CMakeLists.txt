@@ -128,6 +128,13 @@ if(USE_CCACHE)
     endif()
 endif()
 
+# using pkg-config to configure include paths and link libraries
+include(FindPkgConfig)
+pkg_check_modules(SPIRV_TOOLS REQUIRED SPIRV-Tools>=2019.2.1)
+if(BUILD_SHARED_LIBS)
+    pkg_check_modules(SPIRV_TOOLS_SHARED REQUIRED SPIRV-Tools-shared>=2019.2.1)
+endif(BUILD_SHARED_LIBS)
+
 if(ENABLE_CTEST)
     include(CTest)
 endif()
@@ -314,11 +321,7 @@ if(BUILD_EXTERNAL AND IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/External)
     add_subdirectory(External)
 endif()
 
-if(NOT TARGET SPIRV-Tools-opt)
-    set(ENABLE_OPT OFF)
-endif()
-
-if(ENABLE_OPT)
+if(${SPIRV_TOOLS_FOUND} EQUAL 1)
     message(STATUS "optimizer enabled")
     add_definitions(-DENABLE_OPT=1)
 else()
